@@ -1,11 +1,21 @@
 #ifndef SAVEPOLICY_H
 #define SAVEPOLICY_H
-#include <QString>
-class SavePolicy
+#include <QHash>
+#include <QObject>
+
+class SavePolicy:public QObject
 {
+    Q_OBJECT
 public:
-     virtual void Save(QString)=0;
-     virtual void SetRegxPattern(QString)=0;
+    SavePolicy(QObject* parent=0);
+
+     virtual bool init(QHash<QString,QString>)=0;//初始化参数
+
+ public slots:
+     virtual void Save(QString data,int time)=0;
+   signals:
+      void curStatus(QString msg);
+
 };
 
 #endif // SAVEPOLICY_H

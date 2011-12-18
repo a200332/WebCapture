@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     processthread.cpp \
     orderbuilder.cpp \
     txtfilebuilder.cpp \
-    savebysqlite.cpp
+    savebysqlite.cpp \
+    SavePolicy.cpp
 
 HEADERS  += mainwidget.h \
     manager.h \
@@ -31,3 +32,8 @@ HEADERS  += mainwidget.h \
     savebysqlite.h
 
 FORMS    += mainwidget.ui
+
+
+
+
+

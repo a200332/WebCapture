@@ -3,6 +3,7 @@
 #include <QBuffer>
 #include <QDateTime>
 #include <QElapsedTimer>
+#include <QTextCodec>
 #include "downunit.h"
 #include "manager.h"
 
@@ -13,7 +14,7 @@ DownUnit::DownUnit(QObject *parent)// :
     this->parent=parent;
     count=0;
     http= new QHttp(this);
-    http->setHost("www.cdgjbus.com");
+    http->setHost("www.61bb.com");
     buf =  new QBuffer(this);
     connect(http,SIGNAL(requestFinished(int,bool)),SLOT(Request(int,bool)));
 
@@ -46,6 +47,7 @@ void DownUnit::RunTask(){
 //}
 }
 void DownUnit::Request(int id, bool e){
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("GBK"));
     QString data = QString(buf->buffer());
     int el=QDateTime::currentMSecsSinceEpoch()-start_time;
     buf->close();

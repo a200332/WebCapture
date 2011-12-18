@@ -5,6 +5,7 @@
 #include "processthread.h"
 #include "orderbuilder.h"
 #include "txtfilebuilder.h"
+#include "savepolicy.h"
 Manager::Manager(int m,QString u,QObject *parent) :
     QObject(parent)
 {
@@ -14,8 +15,8 @@ Manager::Manager(int m,QString u,QObject *parent) :
     tt = new ProcessThread();
     connect(this,SIGNAL(TransData(QString,int)),tt,SLOT(Process(QString,int)));
     connect(tt,SIGNAL(curstate(QString)),this,SIGNAL(StateData(QString)));
-    tt->moveToThread(process);
-    process->start();
+    //tt->moveToThread(process);
+    //process->start();
     pool =  new QThreadPool(this);
     pool->setMaxThreadCount(m);
     pool_max=m;
@@ -39,6 +40,15 @@ void Manager::setParams(int s, int e, int t,int l,QString dbname){
 void Manager::setParams(UrlBuilder *b, QString db){
     builder = b;
     tt->SetDbName(db);
+}
+void Manager::setParams(UrlBuilder *b, SavePolicy *s){
+    builder = b;
+    saver = s;
+
+    saver->moveToThread(this->process);
+    process->start();
+    connect(this,SIGNAL(TransData(QString,int)),saver,SLOT(Save(QString,int)));
+    connect(saver,SIGNAL(curStatus(QString)),this,SIGNAL(StateData(QString)));
 }
 QString Manager::Get_A_Task(){
 //    if(cur>end)return"";

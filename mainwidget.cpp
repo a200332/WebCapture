@@ -2,6 +2,7 @@
 #include "ui_mainwidget.h"
 #include "txtfilebuilder.h"
 #include "orderbuilder.h"
+#include "savebysqlite.h"
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWidget)
@@ -22,7 +23,7 @@ MainWidget::~MainWidget()
 void MainWidget::on_pushButton_clicked()
 {
     UrlBuilder* build;
-
+    SavePolicy* save;
     //manager->setParms(ui->start->text().toInt(),ui->end->text().toInt(),ui->step->value(),ui->length->value(),ui->dbname->text());
     switch(ui->builderTab->currentIndex()){
     case 0:{
@@ -48,7 +49,19 @@ void MainWidget::on_pushButton_clicked()
         return;
 
     }
-    manager->setParams(build,ui->dbname->text());
+    QHash<QString,QString> config;
+    config.insert("INIT_SQL",ui->initText->toPlainText());
+    config.insert("DBMS","QSQLITE");
+    config.insert("DBName",ui->dbname->text());
+    config.insert("INSERT_SQL",ui->insertText->toPlainText());
+    config.insert("PATTERN",ui->expText->toPlainText());
+    save =  new SaveBySqlite();
+    if(!save->init(config)){
+        qDebug("项止初始化失败!");
+        return ;
+    }
+
+    manager->setParams(build,save);
     ui->builderTab->setDisabled(true);
     manager->StartAll();
 }

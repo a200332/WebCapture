@@ -37,6 +37,7 @@ void ProcessThread::Process(QString data,int http_time){
         // sql="INSERT INTO data VALUES('"+capt.at(1)+"','"+capt.at(2)+"','";
         //sql+=capt.at(3)+"','"+capt.at(4)+"','"+capt.at(5)
         query.exec(sql);
+
     }
     db.commit();
 

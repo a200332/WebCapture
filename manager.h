@@ -7,6 +7,7 @@ class QThreadPool;
 class QThread;
 class ProcessThread;
 class UrlBuilder;
+class SavePolicy;
 class Manager : public QObject
 {
     Q_OBJECT
@@ -17,6 +18,7 @@ public:
     /// start 参数开始 end结束　step　步长 length参数在URL中的长度，不足补前导0,数据库名
     void setParams(int start,int end,int step=0,int length=0,QString dbname="test.db");
     void setParams(UrlBuilder* b,QString db);
+    void setParams(UrlBuilder *b, SavePolicy* s);
     QString Get_A_Task();
 signals:
     void TransData(QString,int);
@@ -34,6 +36,7 @@ private:
     QThread* process;
     UrlBuilder* builder;
     ProcessThread* tt;
+    SavePolicy* saver;
     int pool_max;
     int running;
     QString url;

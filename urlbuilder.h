@@ -5,7 +5,7 @@ class UrlBuilder
 {
 public:
 
-virtual QString BuildAdd(bool next=true);
+virtual QString BuildAdd(bool next=true)=0;
 
 };
 
